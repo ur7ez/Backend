@@ -1,23 +1,19 @@
 /* --- GENERAL ELEMENTS --- */
-
 body {
-    font-size: 1.3vw;
+    font-size: 100%;
+    /*font-size: 1.3vw;*/
     font-family: Arial, 'Times New Roman', Times, serif, sans-serif, cursive, fantasy;
     font-weight: 400;
     background-color: #f1f1f1;
 }
 
-h3, h4 {
+article {
     margin: 2px 2px;
     padding-left: 15px;
-    line-height: 1.5em;
+    /*line-height: 1.5em;*/
 }
 
-h4 + span {
-    padding-left: 17px;
-}
-
-h3 ~ p {
+article p {
     padding-left: 17px;
 }
 
@@ -69,9 +65,47 @@ dl dd {
 }
 
 p.description {
-    padding-left: 5em;
+    padding-left: 3em;
     font-size: 0.9em;
     font-style: italic;
+}
+
+/* NAVIGATION */
+.page-nav {
+    margin-right: 1px;
+    border-color: #101010;
+    width: 18%;
+    /*min-width: 160px;*/
+    position: fixed;
+    height: 92%;
+    background-color: azure;
+}
+
+.page-nav ul, ul {
+    margin: 5px;
+    padding: 2px 5px;
+}
+
+.page-nav ul li, ul li {
+    margin: 5px;
+    list-style-type: none;
+}
+
+.page-nav li a:hover {
+    color: yellowgreen;
+    transition: 500ms;
+    text-shadow: 0 0 10px #fff, 0 0 10px #686cff, 0 0 10px #fff;
+    -webkit-transform: rotate(7deg);
+    transform: rotate(7deg);
+}
+
+.page-nav a {
+    display: inline-block;
+    text-decoration: none;
+    color: #9d9d9d;
+    line-height: 1.7em;
+    font-weight: bold;
+    text-align: left;
 }
 
 /* HEADER */
@@ -99,56 +133,12 @@ p.description {
     color: darkorange;
 }
 
-/* NAVIGATION */
-.page-nav ul, ul {
-    margin: 5px;
-    padding: 2px 5px;
-}
-
-.page-nav ul li, ul li {
-    margin: 5px;
-    list-style-type: none;
-}
-
-.page-nav {
-    margin-right: 1px;
-    border-color: #101010;
-    width: 18%;
-    /*min-width: 160px;*/
-    position: fixed;
-    height: 92%;
-    background-color: azure;
-    font-size: 1.3vw;
-}
-
-.page-nav a {
-    display: inline-block;
-    text-decoration: none;
-    color: #9d9d9d;
-    line-height: 1.7em;
-    font-weight: bold;
-    text-align: left;
-}
-
-.page-nav li a:hover {
-    color: yellowgreen;
-    transition: 500ms;
-    text-shadow: 0 0 10px #fff, 0 0 10px #686cff, 0 0 10px #fff;
-    -webkit-transform: rotate(7deg);
-    transform: rotate(7deg);
-}
-
-/* HEADER */
 .header {
     margin-top: 2px;
     padding: 1px 0;
     overflow: auto;
     width: 85%;
     /*background-color: rgba(224, 221, 146, 0.89);*/
-}
-
-.header span {
-    color: rgb(107, 120, 134);
 }
 
 *, :after, :before {
@@ -174,6 +164,7 @@ p.description {
     color: #1419af;
 }
 
+/* FOOTER */
 .footer {
     width: 100%;
     display: flow-root;
@@ -184,6 +175,7 @@ p.description {
     border-width: 1px;
     padding: 0;
 }
+
 /* Media */
 @media print {
     .body {
