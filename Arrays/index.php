@@ -23,16 +23,23 @@ while ($i <= 150) {
     $i++;
 }
 echo "WHILE: " . $k . PHP_EOL;
-//3. Вывести список натуральных чисел в диапазоне от 1 до 200 (включительно).
+//3. Вывести список простых чисел в диапазоне от 1 до 200 (включительно).
 $to_val = 200;
-echo "<br>Список натуральных чисел в диапазоне от 1 до $to_val:<br>";
-$i = 0;
-while ($i < $to_val) {
-    echo str_pad(++$i, 3, ' ', STR_PAD_RIGHT), ($i % 10) ? " " : "<br>";
+echo "<br>Список простых чисел в диапазоне от 1 до $to_val:<br>";
+for ($i = 2, $simple_cnt = 0; $i <= $to_val; $i++) {
+    $is_simple = true;
+    for ($j = 2; $j < $i && $is_simple; $j++) {
+        if ($i % $j == 0) $is_simple = false;
+    }
+    if ($is_simple) {
+        $simple_cnt++;
+        echo str_pad($i, 3, ' ', STR_PAD_RIGHT), ($simple_cnt % 10) ? " " : "<br>";
+    }
 }
+
 //4. Вывести числа в следущей последовательности: от 200 до 1. (`for, while, foreach`)
 $from_val = 200;
-echo "<br>Последовательность от $from_val до 1:<br>";
+echo "<br><br>Последовательность от $from_val до 1:<br>";
 echo "FOR:<br>";
 for ($i = $from_val; $i > 0; $i--) {
     echo str_pad($i, 3, ' ', STR_PAD_RIGHT), (($i - 1) % 10) ? " " : "<br>";
@@ -235,5 +242,5 @@ echo "<div>" . "Число $n прописью: <b><i>" . $number_in_spelling, "
 echo "<br>Массив, который содержит полный список букв латинского алфавита: <br>";
 $latino = range('A', 'Z');
 foreach ($latino as $key => $abc) {
-    echo ($key % 2) ? ($key+1).". $abc<br>" : "";
+    echo ($key % 2) ? ($key + 1) . ". $abc<br>" : "";
 }
