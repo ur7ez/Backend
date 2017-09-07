@@ -88,16 +88,20 @@ while ($i <= $to_val) {
     }
     $i++;
 }
-//7. Вывести на экран все шестизначные счастливые билеты. Билет называется счастливым, если сумма первых трех цифр в номере билета равна сумме последних трех цифр. Найдите количество счастливых билетов и процент от общего числа билетов.
-echo "<br><br>Шестизначные счастливые билеты:<br>";
-$from_val = 999000; #100000;
-$to_val = 999999;
-$time_start = microtime(true);
 
+//7. Вывести на экран все шестизначные счастливые билеты. Билет называется счастливым, если сумма первых трех цифр в номере билета равна сумме последних трех цифр. Найдите количество счастливых билетов и процент от общего числа билетов.
+
+$from_val = 0; #100000;
+$to_val = 999999;
+echo "<br><br>Шестизначные счастливые билеты от $from_val до $to_val:<br>";
+
+//7.1. перебор с проверкой
 //делаем двумя видами циклов - FOR (без массива) и FOREACH с массивом и логим время выполнения
+$time_start = microtime(true);
 if (1) {
     $cycle_type = "FOR";
-    for ($i = $from_val, $bingo = 0; $i <= $to_val; $i++) {
+    $zz = 0;
+    for ($i = $from_val, $bingo = 0; $i <= $to_val; $i++, $zz++) {
         if ($i < 100000) $k = str_pad($i, 6, '0', STR_PAD_LEFT);
         else $k = (string)$i;
         if ($k[0] + $k[1] + $k[2] == $k[3] + $k[4] + $k[5]) {
@@ -106,9 +110,11 @@ if (1) {
     }
 } else {
     $cycle_type = "FOREACH";
+    $zz = 0;
     $tickets = range($from_val, $to_val);
     $bingo = 0;
     foreach ($tickets as $i) {
+        $zz++;
         if ($i < 100000) $k = str_pad($i, 6, '0', STR_PAD_LEFT);
         else $k = (string)$i;
         if ($k[0] + $k[1] + $k[2] == $k[3] + $k[4] + $k[5]) {
@@ -116,7 +122,9 @@ if (1) {
         }
     }
 }
-echo "<br><br>=> Общее кол-во счастливых билетов: $bingo (" . round(100 * $bingo / ($to_val - $from_val + 1), 3) . "%)<br>Total task execution time (used '$cycle_type' cycle): " . round(microtime(true) - $time_start, 3) . " sec<br>";
+echo "<br><br>=> Общее кол-во счастливых билетов: $bingo (" . round(100 * $bingo / ($to_val - $from_val + 1), 3) . "%)<br>Total task execution time (used '$cycle_type' cycle): " . round(microtime(true) - $time_start, 3) . " sec (total cycles passed: $zz)<br><br>";
+
+//die();
 
 //8. Заполнить массив длины `$n` нулями и единицами, при этом данные значения чередуются начиная с нуля. (`for, while`)
 $n = 10;
