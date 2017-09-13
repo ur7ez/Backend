@@ -54,19 +54,23 @@ echo "Сумма его элементов равна: " . number_format(arr_sum
 echo "4.<br>4.1 Сгенерировать десять массивов из случайных чисел:" . PHP_EOL;
 $my_arrs = array();
 $max_sum = [];
+$j = 0;
+$cur_arr_summ = 0;
 for ($i = 1; $i <= 10; $i++) {
-    echo ($i == 10) ? "<div>" : "<div style='float: left;padding-left:20px;'>";
+    echo ($i == 10) ? "<div>" : "<div style='float: left;padding-right:20px;'>";
     $my_arrs[$i] = array_rnd($r_start, $r_end, $array_lnth);
-    $max_sum[$i] = arr_summ($my_arrs[$i]);
+    $cur_arr_summ = arr_summ($my_arrs[$i]);
+    if ($cur_arr_summ > $j) {
+        $max_sum[0] = $i;
+        $max_sum[1] = $cur_arr_summ;
+        $j = $cur_arr_summ;
+    }
     echo "[$i] => ";
     print_r($my_arrs[$i]);
     echo "</div>";
 }
-//echo "<p style=''>";
-arsort($max_sum, SORT_NUMERIC);
-echo "<br>4.2 Массив с максимальной суммой - №" . key($max_sum) . " (" . current($max_sum) . "):" . PHP_EOL;
-print_r($my_arrs[key($max_sum)]);
-//echo "</p>";
+echo "<br>4.2 Массив с максимальной суммой - №" . $max_sum[0] . " (" . $max_sum[1] . "):" . PHP_EOL;
+print_r($my_arrs[$max_sum[0]]);
 
 //5. Написать функцию, которая принимает один аргумент по ссылке - строку. Функция должна добавить в конец входящей строки строку ` functioned!`. Возвращать функция ничего не должна.
 /**
