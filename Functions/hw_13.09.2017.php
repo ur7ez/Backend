@@ -111,6 +111,7 @@ echo "<hr>";
 
 //*6. Дано слово, состоящее только из строчных латинских букв. Напишите функцию, которая проверит, является ли это слово палиндромом. Выведите `да` или `нет`. При решении этой задачи нельзя использовать циклы, массивы и функции разворота строки. Рекурсия разрешена :)
 echo "*6. Функция, проверяющая слово на палиндром:" . PHP_EOL;
+/*
 function word_palindrom(string $word)
 {
     static $cnt = -1;
@@ -119,6 +120,20 @@ function word_palindrom(string $word)
     }
     ++$cnt;
     return (strtolower($word[strlen($word) - $cnt - 1]) == strtolower($word[$cnt])) && word_palindrom($word);
+}
+*/
+//re-factor: избавляемся от статической переменной и проводим небольшую оптимизацию перебора:
+function word_palindrom(string $word)
+{
+    if (strlen($word) <= 1) {
+        return 1;
+    }
+    //оптимизация - если какая-то симметичная пара не совпала - останавливаем перебор:
+    $check_pair = (strtolower($word[strlen($word) - 1]) == strtolower($word[0]));
+    if (!$check_pair) {
+    	return 0;
+    }
+    return ($check_pair) && word_palindrom(substr($word, 1, strlen($word)-2));
 }
 $some_lat_word = 'saippuakivikauppias';
 echo "слово '$some_lat_word' - ", (word_palindrom($some_lat_word)) ? "палиндром" : "НЕ палиндром";
