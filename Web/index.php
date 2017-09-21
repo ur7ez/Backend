@@ -49,6 +49,9 @@ if ($comments) {
 
     if (isset($_GET['p']) && $_GET['p'] > 1) {
         $currentPage = (int)$_GET['p'];
+        if (count($comments) < (($currentPage - 1) * $commentsPerPage + 1)) {
+            $currentPage = 1;
+        }
     }
 // Вырезать нужные комментарии из $comments
     $comments_trunc = array_slice($comments, $commentsPerPage * ($currentPage - 1), $commentsPerPage);
