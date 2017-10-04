@@ -55,7 +55,7 @@ ob_start();
             if (isset($_SESSION['login'])) {
                 $partContent = str_ireplace('{{login}}', $_SESSION['login'], $partContent);
             } else {
-                $partContent = str_ireplace('Привет {{login}}', '', $partContent);
+//                $partContent = str_ireplace('Привет {{login}}', '', $partContent);
             }
         } else {
             $partContent = ob_get_clean();
