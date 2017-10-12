@@ -73,3 +73,14 @@ FROM (SELECT
       WHERE orderdetails.orderNumber IS NOT NULL
       GROUP BY PL.productLine, orderdetails.orderNumber) AS A
 GROUP BY A.productLine;
+
+# or as alternative way:
+
+SELECT
+  PL.productLine,
+  COUNT(DISTINCT orderdetails.orderNumber)
+FROM productlines PL LEFT JOIN (products
+  LEFT JOIN orderdetails ON products.productCode = orderdetails.productCode)
+    ON PL.productLine = products.productLine
+WHERE orderdetails.orderNumber IS NOT NULL
+GROUP BY PL.productLine;
