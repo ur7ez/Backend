@@ -1,5 +1,5 @@
 <?php
-//Deatailes here:
+//Details here:
 //https://github.com/Gendos-ua/academy_lessons/blob/master/01_arrays/homework.md
 echo "<pre>";
 

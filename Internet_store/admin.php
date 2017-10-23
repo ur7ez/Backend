@@ -32,7 +32,7 @@ $validated = (in_array($user, $valid_users)) && ($password == $valid_passwords[$
 if (!empty($_GET['logout']) && isset($_SESSION['auth'])) {
     unset($_SESSION['auth']);
     unset($_SESSION['login']);
-    header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER["DOCUMENT_URI"]);
+    header('Location: http://' . $_SERVER['HTTP_HOST'] . str_replace('?' . $_SERVER['QUERY_STRING'], '',$_SERVER["REQUEST_URI"]));
 //    header('HTTP/1.1 401 Unauthorized', false);
     authenticate();
     die();
