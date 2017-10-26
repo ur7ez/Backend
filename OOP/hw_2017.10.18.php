@@ -306,17 +306,14 @@ class Form
         if (count($replace_arr) === 0) {
             return $strToFill;
         } else {
-            return str_replace(array_keys($this->array_keys_prefix($replace_arr, "{", "}")), array_values($replace_arr), $strToFill);
+            $pref = "{";
+            $postf = "}";
+            $rarr = [];
+            foreach ($replace_arr as $key => $val) {
+                $rarr[$pref . $key . $postf] = $val;
+            }
+            return str_replace(array_keys($rarr), array_values($replace_arr), $strToFill);
         }
-    }
-
-    private function array_keys_prefix($arr, $pref = "", $postf = "")
-    {
-        $rarr = [];
-        foreach ($arr as $key => $val) {
-            $rarr[$pref . $key . $postf] = $val;
-        }
-        return $rarr;
     }
 }
 
