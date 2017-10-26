@@ -350,7 +350,11 @@ class Cookie
 
     public function get($cookieName)
     {
-        return $_COOKIE[$cookieName];
+        if (isset($_COOKIE[$cookieName])) {
+            return $_COOKIE[$cookieName];
+        } else {
+            return false;
+        }
     }
 
     public function del($cookieName)
