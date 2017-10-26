@@ -55,7 +55,7 @@ FROM offices
     LEFT JOIN (customers
       LEFT JOIN orders o ON customers.customerNumber = o.customerNumber)
       ON employees.employeeNumber = customers.salesRepEmployeeNumber) ON offices.officeCode = employees.officeCode
-WHERE o.orderDate BETWEEN '2005-01-01' AND '2005-12-31'
+WHERE YEAR(o.orderDate) = 2005
 GROUP BY offices.officeCode
 HAVING orders_CNT > 5;
 
