@@ -268,32 +268,55 @@ class Form
 {
     public function input(array $attr_arr)
     {
-        return '<input type="' . $attr_arr['type'] . '" value="' . $attr_arr['value'] . '">';
+        $tag = '<input type="{type}" value="{value}">';
+        return $this->fillElements($attr_arr, $tag);
     }
 
     public function submit(array $attr_arr)
     {
-        return '<input type="submit" value="' . $attr_arr['value'] . '">';
+        $tag = '<input type="submit" value="{value}">';
+        return $this->fillElements($attr_arr, $tag);
     }
 
     public function password(array $attr_arr)
     {
-        return '<input type="password" value="' . $attr_arr['value'] . '">';
+        $tag = '<input type="password" value="{value}">';
+        return $this->fillElements($attr_arr, $tag);
     }
 
     public function textarea(array $attr_arr)
     {
-        return '<textarea placeholder="' . $attr_arr['placeholder'] . '">' . $attr_arr['value'] . '</textarea>';
+        $tag = '<textarea placeholder="{placeholder}">{value}</textarea>';
+        return $this->fillElements($attr_arr, $tag);
     }
 
     public function open(array $attr_arr)
     {
-        return '<form action="' . $attr_arr['action'] . '" method="' . $attr_arr['method'] . '">';
+        $tag = '<form action="{action}" method="{method}">';
+        return $this->fillElements($attr_arr, $tag);
     }
 
     public function close()
     {
         return '</form>';
+    }
+
+    private function fillElements(array $replace_arr, string $strToFill)
+    {
+        if (count($replace_arr) === 0) {
+            return $strToFill;
+        } else {
+            return str_replace(array_keys($this->array_keys_prefix($replace_arr, "{", "}")), array_values($replace_arr), $strToFill);
+        }
+    }
+
+    private function array_keys_prefix($arr, $pref = "", $postf = "")
+    {
+        $rarr = [];
+        foreach ($arr as $key => $val) {
+            $rarr[$pref . $key . $postf] = $val;
+        }
+        return $rarr;
     }
 }
 
@@ -330,7 +353,7 @@ class Cookie
 
     public function get($cookieName)
     {
-        return $_COOKIE($cookieName);
+        return $_COOKIE[$cookieName];
     }
 
     public function del($cookieName)
@@ -401,7 +424,7 @@ class Session
         session_unset();
         session_destroy();
         session_write_close();
-        setcookie(session_name(),'',0,'/');
+        setcookie(session_name(), '', 0, '/');
 //        session_regenerate_id();
         $this->sessionState = self::SESSION_NOT_STARTED;
     }
@@ -412,8 +435,8 @@ $mysession = new Session();
 $mysession->set('user', 'Mike');
 echo "Задача 9.\n Переменная 'user' в сессии c ID = '" . session_id() . "' имеет значение: '" . $mysession->get('user') . "'";
 $mysession->del('user');
-echo "\n Переменная 'user' удалена, попытка чтения значения: '" . $mysession->get('user') ."'";
-echo "\n Переменная 'erere' не была установлена, попытка чтения ее значения: '" . $mysession->get('erere') ."'";
+echo "\n Переменная 'user' удалена, попытка чтения значения: '" . $mysession->get('user') . "'";
+echo "\n Переменная 'erere' не была установлена, попытка чтения ее значения: '" . $mysession->get('erere') . "'";
 
 $mysession->destroy();
-echo "\n Сессия удалена (SID = '". session_id() ."')!";
+echo "\n Сессия удалена (SID = '" . session_id() . "')!";
