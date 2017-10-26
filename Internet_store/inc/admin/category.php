@@ -29,7 +29,7 @@ if (isset($id) && isset($_GET['delete'])) {
     $id = null;
 }
 
-$categoryCNT = (int)categoryCount()[0][0];
+$categoryCNT = categoryCount();
 // Постраничная навигация
 $rowsPerPage = 5;
 $currentPage = 1;
@@ -73,7 +73,7 @@ $categoryResult = categoryList(null, $rowsPerPage, $rowsPerPage * ($currentPage 
             ?>
             <li>
                 <a href="?page=category&p=<?= $currentPage ?>&id=<?= $category['id'] ?>&delete"
-                   title="Удалить категорию <?= $category['title'] ?>"><input type="button" value="x"></a>
+                   title="Удалить категорию <?= $category['title'] ?>"><button>x</button></a>
                 <a href="?page=category&p=<?= $currentPage ?>&id=<?= $category['id'] ?>">
                     <?= $category['id'] ?>: <?= htmlspecialchars($category['title'], ENT_QUOTES | ENT_HTML401) ?>
                 </a>
@@ -87,7 +87,7 @@ $categoryResult = categoryList(null, $rowsPerPage, $rowsPerPage * ($currentPage 
     <!--    Вывод ссылок постраничной навигации-->
     <p>Перейти на страницу:
         <?
-        for ($j = 1; $j <= (int)(($categoryCNT % $rowsPerPage) ? 1 : 0) + intval($categoryCNT / $rowsPerPage); $j++):
+        for ($j = 1; $j <= ceil($categoryCNT / $rowsPerPage); $j++):
             ?>
             <span class="pagination">
         <? if ($currentPage !== $j): ?>

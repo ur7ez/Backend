@@ -75,7 +75,7 @@ function getList($tableName, $id = null, $rows_cnt = null, $offset = 0)
 }
 
 /**
- * @return array|null
+ * @return integer
  */
 function categoryCount()
 {
@@ -83,7 +83,7 @@ function categoryCount()
 }
 
 /**
- * @return array|null
+ * @return integer
  */
 function productCount()
 {
@@ -92,16 +92,17 @@ function productCount()
 
 /**
  * @param $tableName
- * @return array|null
+ * @return integer
  */
 function countList($tableName)
 {
     global $connection;
 
-    return mysqli_fetch_all(mysqli_query(
+    $stmt = mysqli_fetch_all(mysqli_query(
         $connection,
-        "SELECT count(*) CNT FROM $tableName;"
+        "SELECT count(id) CNT FROM $tableName;"
     ));
+        return (int) $stmt[0][0];
 }
 
 /** Create entity */

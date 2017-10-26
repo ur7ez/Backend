@@ -46,7 +46,7 @@ if (isset($id) && isset($_GET['delete'])) {
     $id = null;
 }
 
-$productCNT = (int)productCount()[0][0];
+$productCNT = productCount();
 // Постраничная навигация
 $rowsPerPage = 5;
 $currentPage = 1;
@@ -137,7 +137,7 @@ $productResult = productList(null, $rowsPerPage, $rowsPerPage * ($currentPage - 
             <tr>
                 <td align="center">
                     <a href="?page=product&p=<?= $currentPage ?>&id=<?= $product['id'] ?>&delete"
-                       title="Удалить товар"><input type="button" value="x"></a>
+                       title="Удалить товар"><button>x</button></a>
                     <a href="?page=product&p=<?= $currentPage ?>&id=<?= $product['id'] ?>" title="Редактировать товар">
                         <input type="button" value="...">
                     </a>
@@ -169,7 +169,7 @@ $productResult = productList(null, $rowsPerPage, $rowsPerPage * ($currentPage - 
     <!--    Вывод ссылок постраничной навигации-->
     <p>Перейти на страницу:
         <?
-        for ($j = 1; $j <= (int)(($productCNT % $rowsPerPage) ? 1 : 0) + intval($productCNT / $rowsPerPage); $j++):
+        for ($j = 1; $j <= ceil($productCNT / $rowsPerPage); $j++):
             ?>
             <span class="pagination">
         <? if ($currentPage !== $j): ?>
