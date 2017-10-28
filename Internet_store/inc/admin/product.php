@@ -5,7 +5,11 @@
  * Date: 16.10.2017
  * Time: 19:59
  */
+use App\Entity\ProductEntity, App\Entity\CategoryEntity;
+
 $errors = [];
+$prodObj = new ProductEntity();
+$catObj = new CategoryEntity();
 
 if (isset($_POST['save'])) {
     $id = $_POST['id'];
@@ -31,9 +35,9 @@ if (isset($_POST['save'])) {
 
         if (!empty($data)) {
             if ($id > 0) {
-                $result = updateProduct($id, $data);
+                $result = $prodObj->update($id, $data);
             } else {
-                $result = createProduct($data);
+                $result = $prodObj->create($data);
             }
         }
     }
@@ -42,11 +46,11 @@ if (isset($_POST['save'])) {
 $id = $_GET['id'];
 
 if (isset($id) && isset($_GET['delete'])) {
-    deleteProduct($id);
+    $prodObj->delete($id);
     $id = null;
 }
 
-$productCNT = productCount();
+$productCNT = $prodObj->count();
 // Постраничная навигация
 $rowsPerPage = 5;
 $currentPage = 1;
@@ -58,32 +62,32 @@ if (isset($_GET['p']) && $_GET['p'] > 1) {
     }
 }
 // Вырезать нужные строки
-$productResult = productList(null, $rowsPerPage, $rowsPerPage * ($currentPage - 1));
+$productResult = $prodObj->get(null, $rowsPerPage, $rowsPerPage * ($currentPage - 1));
 
 ?>
 <div class="container">
     <a href="?page=product&p=<?= $currentPage ?>&id=0">Добавить товар</a>
     <br><br>
+    <? if (!empty($errors)): ?>
+        <div class="alert alert-danger">
+            <?= implode('<br>', $errors) ?>
+        </div>
+    <? endif; ?>
+    <br>
     <?php if (isset($id)) {
         $title = '';
         $price = null;
         $category_id = 0;
-        $categoryResult = categoryList();
+        $categoryResult = $catObj->get(); //categoryList();
         $description = '';
         if ($id > 0) {
-            $product = mysqli_fetch_assoc(productList($id));
+            $product = mysqli_fetch_assoc($prodObj->get($id));
             $title = htmlspecialchars($product['title'], ENT_QUOTES | ENT_HTML401);
             $description = htmlspecialchars($product['description']);
             $price = $product['price'];
             $category_id = $product['category_id'];
-        }
+            }
         ?>
-        <? if (!empty($errors)): ?>
-            <div class="alert alert-danger">
-                <?= implode('<br>', $errors) ?>
-            </div>
-        <? endif; ?>
-        <br>
         <form action="?page=product<?= "&p=" . $currentPage ?>" method="post">
         <input type="hidden" name="id" value="<?= $id ?>">
         <input autofocus required placeholder="Название товара" name="title" title="Название товара" value='<?= $title ?>'>
@@ -153,7 +157,7 @@ $productResult = productList(null, $rowsPerPage, $rowsPerPage * ($currentPage - 
                 </td>
                 <td><?= htmlspecialchars(
                         mysqli_fetch_assoc(
-                            categoryList($product['category_id']
+                            $catObj->get($product['category_id']
                             ))['title']
                         , ENT_QUOTES | ENT_HTML401) ?></td>
                 <td>
