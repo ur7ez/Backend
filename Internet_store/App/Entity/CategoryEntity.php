@@ -49,29 +49,4 @@ class CategoryEntity extends Base
         ];
         return $fieldsTypes;
     }
-
-    /**
-     * Этот метод вызываем перед каждым обновлением/добавлением,
-     * здесь проверяем каждый элемент массива на соответствие типу из массива
-     * полученного в getMap, если тип не соответствует - выбрасываем исключение.
-     *
-     * @param array $data
-     * @param string $tableName
-     * @return bool
-     * @throws \Exception
-     */
-    protected function checkFields(array $data, string $tableName = ''): bool
-    {
-        $checkSum = true;
-        $fieldTypes = $this->getMap();
-        foreach ($data as $key => $val) {
-            if (!array_key_exists($key, $fieldTypes)) {
-                throw new \Exception("Поле '$key' не найдено в таблице '" . $tableName . "'");
-            } else if ($fieldTypes[$key] <> gettype($val)) {
-                throw new \Exception("Тип данных в поле '$key' не соответствует типу данных в таблице '" .
-                    $tableName . "'");
-            }
-        }
-        return $checkSum;
-    }
 }

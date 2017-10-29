@@ -38,11 +38,27 @@ abstract class Base
      * полученного в getMap, если тип не соответствует - выбрасываем исключение.
      *
      * @param array $data
-     * @param string $tableNmae
+     * @param string $tableName
      * @return bool
      * @throws \Exception
      */
-    abstract protected function checkFields(array $data, string $tableNmae = ''): bool;
+    protected function checkFields(array $data, string $tableName = ''): bool
+    {
+        $checkSum = true;
+        $fieldTypes = $this->getMap();
+        if ($tableName == '') {
+            $tableName = $this->getTableName();
+        }
+        foreach ($data as $key => $val) {
+            if (!array_key_exists($key, $fieldTypes)) {
+                throw new \Exception("Поле '$key' не найдено в таблице '" . $tableName . "'");
+            } else if ($fieldTypes[$key] <> gettype($val)) {
+                throw new \Exception("Тип данных в поле '$key' не соответствует типу данных в таблице '" .
+                    $tableName . "'");
+            }
+        }
+        return $checkSum;
+    }
 
     /**
      * В этом методе получаем список элементов таблицы
