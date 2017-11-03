@@ -31,8 +31,3 @@ class Config implements IConfig
         return self::$paramArr[$paramName];
     }
 }
-
-interface IConfig
-{
-    public static function get(string $paramName);
-}

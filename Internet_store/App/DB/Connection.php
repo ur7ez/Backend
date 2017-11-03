@@ -10,33 +10,6 @@ namespace App\DB;
 
 use App\Main\Config;
 
-abstract class Singleton
-{
-    protected static $instance = null;
-
-    final public static function getInstance()
-    {
-        if (static::$instance === null) {
-            static::$instance = new static();
-        }
-        return static::$instance;
-    }
-
-    abstract protected function __construct();
-
-    final private function __clone()
-    {
-    }
-
-    final private function __sleep()
-    {
-    }
-
-    final private function __wakeup()
-    {
-    }
-}
-
 class Connection extends Singleton implements IConnection
 {
     private static $connection;
@@ -74,18 +47,4 @@ class Connection extends Singleton implements IConnection
     {
         return mysqli_query(static::$connection, $queryStr);
     }
-}
-
-interface IConnection
-{
-    /**
-     * @param string $queryStr
-     * @return bool|\mysqli_result
-     */
-    public function query(string $queryStr);
-
-    /**
-     * @return \mysqli
-     */
-    public function get();
 }
