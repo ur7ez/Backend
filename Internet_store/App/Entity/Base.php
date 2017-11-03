@@ -8,12 +8,22 @@
  */
 
 namespace App\Entity;
+
+use App\DB\IConnection;
+
 /**
  * Class Base
  * @package App\Entity
  */
 abstract class Base
 {
+    protected $connection;
+
+    public function __construct(IConnection $conn)
+    {
+        $this->connection = $conn;
+    }
+
     /**
      * @return string
      */
@@ -71,7 +81,6 @@ abstract class Base
      */
     public function get(int $id = null, $rows_cnt = null, $offset = 0)
     {
-        global $connection;
         $tableName = $this->getTableName();
         $where = '';
         if ($id > 0) {
@@ -81,8 +90,7 @@ abstract class Base
         if ($rows_cnt > 0) {
             $lim = "LIMIT $offset, $rows_cnt";
         }
-        return mysqli_query(
-            $connection,
+        return $this->connection->query(
             "SELECT * FROM $tableName $where $lim;"
         );
     }
@@ -94,10 +102,8 @@ abstract class Base
      */
     public function count()
     {
-        global $connection;
         $tableName = $this->getTableName();
-        $stmt = mysqli_fetch_all(mysqli_query(
-            $connection,
+        $stmt = mysqli_fetch_all($this->connection->query(
             "SELECT count(id) CNT FROM $tableName;"
         ));
         return (int)$stmt[0][0];
@@ -112,24 +118,21 @@ abstract class Base
      */
     public function create(array $data)
     {
-        global $connection;
         global $errors;
         $tableName = $this->getTableName();
         try {
             $this->checkFields($data, $tableName);
             foreach ($data as &$val) {
-                $val = mysqli_escape_string($connection, $val);
+                $val = mysqli_escape_string($this->connection->get(), $val);
             }
 
             $cols = implode(',', array_keys($data));
             $values = "'" . implode("','", $data) . "'";
-            return mysqli_query(
-                $connection,
+            return $this->connection->query(
                 "INSERT INTO $tableName ($cols) VALUES ($values);"
             );
         } catch (\Exception $e) {
             $errors[] = $e->getMessage();
-
             return false;
         }
     }
@@ -144,7 +147,6 @@ abstract class Base
      */
     public function update(int $id, array $data)
     {
-        global $connection;
         global $errors;
         $tableName = $this->getTableName();
         $values = [];
@@ -152,12 +154,11 @@ abstract class Base
         try {
             $this->checkFields($data, $tableName);
             foreach ($data as $key => $val) {
-                $val = mysqli_escape_string($connection, $val);
+                $val = mysqli_escape_string($this->connection->get(), $val);
                 $values[] = "$key = '$val'";
             }
             $values = implode(',', $values);
-            return mysqli_query(
-                $connection,
+            return $this->connection->query(
                 "UPDATE $tableName SET $values WHERE id = $id;"
             );
         } catch (\Exception $e) {
@@ -173,12 +174,10 @@ abstract class Base
      * @return bool|\mysqli_result
      */
     public function delete(int $id)
-    { /* Тут реализация */
-        global $connection;
+    {
         $tableName = $this->getTableName();
 
-        return mysqli_query(
-            $connection,
+        return $this->connection->query(
             "DELETE FROM $tableName WHERE id = $id;"
         );
 

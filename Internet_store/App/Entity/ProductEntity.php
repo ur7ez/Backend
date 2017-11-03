@@ -8,15 +8,25 @@
 
 namespace App\Entity;
 
+use App\DB\IConnection, App\Main\IConfig;
+
 class ProductEntity extends Base
 {
+    private $config;
+
+    public function __construct(IConnection $conn, IConfig $cfg)
+    {
+        parent::__construct($conn);
+        $this->config = $cfg;
+    }
+
     /**
      * метод для получения имени таблицы, с которой работают остальные методы
      * @return string
      */
     public function getTableName(): string
     {
-        return $GLOBALS['tablesMap']['product'];
+        return $this->config::get('tablesMap')['product'];
     }
 
     /**

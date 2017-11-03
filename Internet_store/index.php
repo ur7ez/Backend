@@ -7,13 +7,12 @@
  */
 $localDir = (isset($localDir)) ? $localDir : 'public';
 
-include_once('lib/core.php');
-
 spl_autoload_register(function ($name) {
     $name = str_replace('\\', DS, $name);
 //    var_dump($name);
     include_once $name . '.php';
 });
+include_once('lib/core.php');
 
 //$incPath = $_SERVER['DOCUMENT_ROOT'] . DS . 'Internet_store' . DS . 'inc' . DS . 'public';
 $incPath = __DIR__ . DS . 'inc' . DS . $localDir;

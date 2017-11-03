@@ -6,10 +6,11 @@
  * Time: 19:59
  */
 
-use App\Entity\CategoryEntity;
+use App\Entity\CategoryEntity, App\Main\Config, App\DB\Connection;
 
 $errors = [];
-$catObj = new CategoryEntity();
+$connection = Connection::getInstance();
+$catObj = new CategoryEntity($connection, $config);
 
 if (isset($_POST['save'])) {
     $id = $_POST['id'];
@@ -44,7 +45,7 @@ if (isset($id) && isset($_GET['delete'])) {
 
 $categoryCNT = $catObj->count();
 // Постраничная навигация
-$rowsPerPage = 5;
+$rowsPerPage = Config::get('rowsPerPageInCategory');
 $currentPage = 1;
 
 if (isset($_GET['p']) && $_GET['p'] > 1) {

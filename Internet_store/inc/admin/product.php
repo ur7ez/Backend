@@ -5,11 +5,12 @@
  * Date: 16.10.2017
  * Time: 19:59
  */
-use App\Entity\ProductEntity, App\Entity\CategoryEntity;
+use App\Entity\ProductEntity, App\Entity\CategoryEntity, App\Main\Config, App\DB\Connection;
 
 $errors = [];
-$prodObj = new ProductEntity();
-$catObj = new CategoryEntity();
+$connection = Connection::getInstance();
+$prodObj = new ProductEntity($connection, $config);
+$catObj = new CategoryEntity($connection, $config);
 
 if (isset($_POST['save'])) {
     $id = $_POST['id'];
@@ -52,7 +53,7 @@ if (isset($id) && isset($_GET['delete'])) {
 
 $productCNT = $prodObj->count();
 // Постраничная навигация
-$rowsPerPage = 5;
+$rowsPerPage = Config::get('rowsPerPageInGoods');
 $currentPage = 1;
 
 if (isset($_GET['p']) && $_GET['p'] > 1) {
