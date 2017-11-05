@@ -8,7 +8,8 @@
 
 namespace App\Entity;
 
-use App\DB\IConnection, App\Main\IConfig;
+use App\DB\IConnection,
+    App\Main\IConfig;
 
 class ProductEntity extends Base
 {

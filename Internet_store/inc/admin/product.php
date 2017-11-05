@@ -5,9 +5,14 @@
  * Date: 16.10.2017
  * Time: 19:59
  */
-use App\Entity\ProductEntity, App\Entity\CategoryEntity, App\Main\Config, App\DB\Connection;
+
+use App\Entity\ProductEntity,
+    App\Entity\CategoryEntity,
+    App\Main\Config,
+    App\DB\Connection;
 
 $errors = [];
+$config = new Config();
 $connection = Connection::getInstance();
 $prodObj = new ProductEntity($connection, $config);
 $catObj = new CategoryEntity($connection, $config);
@@ -35,10 +40,14 @@ if (isset($_POST['save'])) {
         $data['category_id'] = (int)$category_id;
 
         if (!empty($data)) {
-            if ($id > 0) {
-                $result = $prodObj->update($id, $data);
-            } else {
-                $result = $prodObj->create($data);
+            try {
+                if ($id > 0) {
+                    $result = $prodObj->update($id, $data);
+                } else {
+                    $result = $prodObj->create($data);
+                }
+            } catch (Exception $e) {
+                $errors[] = $e->getMessage();
             }
         }
     }
@@ -64,7 +73,10 @@ if (isset($_GET['p']) && $_GET['p'] > 1) {
 }
 // Вырезать нужные строки
 $productResult = $prodObj->get(null, $rowsPerPage, $rowsPerPage * ($currentPage - 1));
-
+$categoriesAll = array_column(
+    mysqli_fetch_all($catObj->get(), 1),
+    'title',
+    'id');
 ?>
 <div class="container">
     <a href="?page=product&p=<?= $currentPage ?>&id=0">Добавить товар</a>
@@ -79,7 +91,6 @@ $productResult = $prodObj->get(null, $rowsPerPage, $rowsPerPage * ($currentPage 
         $title = '';
         $price = null;
         $category_id = 0;
-        $categoryResult = $catObj->get(); //categoryList();
         $description = '';
         if ($id > 0) {
             $product = mysqli_fetch_assoc($prodObj->get($id));
@@ -87,35 +98,37 @@ $productResult = $prodObj->get(null, $rowsPerPage, $rowsPerPage * ($currentPage 
             $description = htmlspecialchars($product['description']);
             $price = $product['price'];
             $category_id = $product['category_id'];
-            }
+        }
         ?>
         <form action="?page=product<?= "&p=" . $currentPage ?>" method="post">
-        <input type="hidden" name="id" value="<?= $id ?>">
-        <input autofocus required placeholder="Название товара" name="title" title="Название товара" value='<?= $title ?>'>
-        <input type="number" step="0.01" value="<?= $price ?>"
-               title="Цена товара" placeholder="Цена товара" name="price">
-        <label for="select1">Категория товара: </label>
-        <select name="category" id="select1" title="Категория товара" required>
-            <option disabled selected>Выберите категорию ...</option>
-            <?php
-            while ($category = mysqli_fetch_assoc($categoryResult)) {
+            <input type="hidden" name="id" value="<?= $id ?>">
+            <input autofocus required placeholder="Название товара" name="title" title="Название товара"
+                   value='<?= $title ?>'>
+            <input type="number" step="0.01" value="<?= $price ?>"
+                   title="Цена товара" placeholder="Цена товара" name="price">
+            <label for="select1">Категория товара: </label>
+            <select name="category" id="select1" title="Категория товара" required>
+                <option disabled selected>Выберите категорию ...</option>
+                <?php
+                foreach ($categoriesAll as $id => $category) {
+                    ?>
+                    <option
+                        <?= ($id == $category_id) ? "selected" : "" ?>
+                            value="<?= $id ?>"><?= htmlspecialchars(
+                            $category,
+                            ENT_QUOTES | ENT_HTML401
+                        ) ?>
+                    </option>
+                    <?
+                }
                 ?>
-                <option
-                    <?= ($category['id'] === $category_id) ? "selected" : "" ?>
-                        value="<?= $category['id'] ?>"><?= htmlspecialchars(
-                        $category['title'],
-                        ENT_QUOTES | ENT_HTML401
-                    ) ?></option>
-                <?
-            }
-            ?>
-        </select>
-        <p>
+            </select>
+            <p>
                 <textarea maxlength="65530" name="description" id="" cols="80" rows="8" title="Описание товара"
                           placeholder="Детальное описание"><?= $description ?></textarea>
-        </p>
-        <input type="submit" name="save" value="Сохранить">
-        <input type="reset" name="cancel" value="Отмена">
+            </p>
+            <input type="submit" name="save" value="Сохранить">
+            <input type="reset" name="cancel" value="Отмена">
         </form>
         <br>
         <br>
@@ -142,7 +155,9 @@ $productResult = $prodObj->get(null, $rowsPerPage, $rowsPerPage * ($currentPage 
             <tr>
                 <td align="center">
                     <a href="?page=product&p=<?= $currentPage ?>&id=<?= $product['id'] ?>&delete"
-                       title="Удалить товар"><button>x</button></a>
+                       title="Удалить товар">
+                        <button>x</button>
+                    </a>
                     <a href="?page=product&p=<?= $currentPage ?>&id=<?= $product['id'] ?>" title="Редактировать товар">
                         <input type="button" value="...">
                     </a>
@@ -157,10 +172,9 @@ $productResult = $prodObj->get(null, $rowsPerPage, $rowsPerPage * ($currentPage 
                     <?= $product['price'] ?>
                 </td>
                 <td><?= htmlspecialchars(
-                        mysqli_fetch_assoc(
-                            $catObj->get($product['category_id']
-                            ))['title']
-                        , ENT_QUOTES | ENT_HTML401) ?></td>
+                        $categoriesAll[$product['category_id']],
+                        ENT_QUOTES | ENT_HTML401) ?>
+                </td>
                 <td>
                     <?= htmlspecialchars($product['description'], ENT_QUOTES | ENT_HTML401) ?>
                 </td>

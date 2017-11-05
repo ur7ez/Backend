@@ -28,6 +28,10 @@ class Config implements IConfig
      */
     public static function get(string $paramName)
     {
-        return self::$paramArr[$paramName];
+        if (isset(self::$paramArr[$paramName])) {
+            return self::$paramArr[$paramName];
+        } else {
+            return false;
+        }
     }
 }

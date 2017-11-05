@@ -118,23 +118,17 @@ abstract class Base
      */
     public function create(array $data)
     {
-        global $errors;
         $tableName = $this->getTableName();
-        try {
-            $this->checkFields($data, $tableName);
-            foreach ($data as &$val) {
-                $val = mysqli_escape_string($this->connection->get(), $val);
-            }
-
-            $cols = implode(',', array_keys($data));
-            $values = "'" . implode("','", $data) . "'";
-            return $this->connection->query(
-                "INSERT INTO $tableName ($cols) VALUES ($values);"
-            );
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
-            return false;
+        $this->checkFields($data, $tableName);
+        foreach ($data as &$val) {
+            $val = mysqli_escape_string($this->connection->get(), $val);
         }
+
+        $cols = implode(',', array_keys($data));
+        $values = "'" . implode("','", $data) . "'";
+        return $this->connection->query(
+            "INSERT INTO $tableName ($cols) VALUES ($values);"
+        );
     }
 
     /**
@@ -147,24 +141,18 @@ abstract class Base
      */
     public function update(int $id, array $data)
     {
-        global $errors;
         $tableName = $this->getTableName();
         $values = [];
 
-        try {
-            $this->checkFields($data, $tableName);
-            foreach ($data as $key => $val) {
-                $val = mysqli_escape_string($this->connection->get(), $val);
-                $values[] = "$key = '$val'";
-            }
-            $values = implode(',', $values);
-            return $this->connection->query(
-                "UPDATE $tableName SET $values WHERE id = $id;"
-            );
-        } catch (\Exception $e) {
-            $errors[] = $e->getMessage();
-            return false;
+        $this->checkFields($data, $tableName);
+        foreach ($data as $key => $val) {
+            $val = mysqli_escape_string($this->connection->get(), $val);
+            $values[] = "$key = '$val'";
         }
+        $values = implode(',', $values);
+        return $this->connection->query(
+            "UPDATE $tableName SET $values WHERE id = $id;"
+        );
     }
 
     /**

@@ -6,9 +6,12 @@
  * Time: 19:59
  */
 
-use App\Entity\CategoryEntity, App\Main\Config, App\DB\Connection;
+use App\Entity\CategoryEntity,
+    App\Main\Config,
+    App\DB\Connection;
 
 $errors = [];
+$config = new Config();
 $connection = Connection::getInstance();
 $catObj = new CategoryEntity($connection, $config);
 
@@ -27,10 +30,14 @@ if (isset($_POST['save'])) {
         }
         $data['description'] = $description;
         if (!empty($data)) {
-            if ($id > 0) {
-                $result = $catObj->update($id, $data);
-            } else {
-                $result = $catObj->create($data);
+            try {
+                if ($id > 0) {
+                    $result = $catObj->update($id, $data);
+                } else {
+                    $result = $catObj->create($data);
+                }
+            } catch (Exception $e) {
+                $errors[] = $e->getMessage();
             }
         }
     }
