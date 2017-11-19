@@ -12,5 +12,6 @@ return [
         'homepage' => 'Home',
         'pages' => 'Pages',
         'contact_us' => 'Contact Us',
+        'logout' => 'Logout',
     ],
 ];

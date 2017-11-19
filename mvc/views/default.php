@@ -32,6 +32,11 @@ $router = \App\Core\App::getRouter();
                 <li class="nav-item">
                     <a class="nav-link" href="<?=$router->buildUri('contacts.index')?>"><?=__('header.contact_us')?></a>
                 </li>
+                <?php if (\App\Core\Session::get('login')) { ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?=$router->buildUri('users.logout')?>"><?=__('header.logout')?></a>
+                </li>
+                <?php } ?>
             </ul>
         </div>
     </nav>
