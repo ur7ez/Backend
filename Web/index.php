@@ -15,10 +15,11 @@ $opt = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     PDO::ATTR_EMULATE_PREPARES => false,
+    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
 ];
 $pdo = new PDO($dsn, $user, $pass, $opt);
-$pdo->query('SET NAMES utf8;');
-$pdo->query('SET CHARSET utf8;');
+//$pdo->query('SET NAMES utf8;');
+//$pdo->query('SET CHARSET utf8;');
 
 $filename = __DIR__ . '/data/data.txt';
 $censoredFilename = __DIR__ . '/data/censored.txt';
