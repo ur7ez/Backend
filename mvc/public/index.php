@@ -6,11 +6,12 @@
  * Time: 20:31
  */
 
-use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(dirname(__FILE__)));
+
 include_once ROOT . DS . 'vendor' . DS . 'autoload.php';
 
 try {
