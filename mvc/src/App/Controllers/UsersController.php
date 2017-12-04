@@ -72,7 +72,6 @@ class UsersController extends Base
     {
         $curUser = App::getSession()->get('login');
         App::getSession()->destroy();
-        App::setSession();
         App::getSession()->setFlash('User \'' . $curUser . '\' logged out successfully.');
         App::getRouter()->redirect('users.login');
     }

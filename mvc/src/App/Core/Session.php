@@ -94,8 +94,7 @@ class Session
         }
         */
         session_destroy();
-        self::$instance = null;
-//        self::$instance = new static();
+        self::$instance = new static();
     }
 
     public function __destruct()
