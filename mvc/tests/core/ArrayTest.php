@@ -5,7 +5,7 @@
  * Date: 27.11.2017
  * Time: 19:55
  */
-class ArrayTest extends PHPUnit\Framework\TestCase
+class ArrayTest extends \PHPUnit\Framework\TestCase
 {
     public function testEmpty()
     {

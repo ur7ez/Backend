@@ -7,7 +7,7 @@
  */
 use App\Core\Config;
 
-class RouterTest extends PHPUnit\Framework\TestCase
+class RouterTest extends \PHPUnit\Framework\TestCase
 {
     public function testInitialization()
     {

@@ -47,4 +47,11 @@ return [
         'email' => 'Your email',
         'message' => 'Your message',
     ],
+    'users' => [
+        'todo' => 'TODO',
+        'login' => 'Login',
+        'email' => 'E-mail',
+        'role' => 'Role',
+        'active' => 'Is active?',
+    ],
 ];

@@ -21,6 +21,11 @@ class App
     /** @var Session */
     private static $session;
 
+    public static function setSession()
+    {
+        static::$session = Session::getInstance();
+    }
+
     /**
      * @return Session
      */

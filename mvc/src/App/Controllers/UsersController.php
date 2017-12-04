@@ -10,6 +10,7 @@ namespace App\Controllers;
 
 use App\Core\App;
 use App\Core\Config;
+use App\Core\Session;
 use App\Entity\User;
 
 class UsersController extends Base
@@ -25,21 +26,18 @@ class UsersController extends Base
 
     public function registerAction()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
             $data = $_POST;
             if (!strlen($data['password']) || $data['password'] !== $data['password_cfm']) {
                 App::getSession()->setFlash('Failed password integrity check');
             } else {
-                array_pop($data);
-                if ($data) {
-                    if ($this->usersModel->register($data)) {
-                        App::getSession()->setFlash('Thank you for registration!');
-                        App::getRouter()->redirect('users.login');
-                    } else {
-                        App::getSession()->setFlash(
-                            'User with login \'' . $data['login'] . '\' already exists.
+                if ($this->usersModel->register($data)) {
+                    App::getSession()->setFlash('Thank you for registration!');
+                    App::getRouter()->redirect('users.login');
+                } else {
+                    App::getSession()->setFlash(
+                        'User with login \'' . $data['login'] . '\' already exists.
                      Choose another login or use <a href="' . App::getRouter()->buildUri('users.login') . '">Sign-in form</a>.');
-                    }
                 }
             }
         }
@@ -73,10 +71,9 @@ class UsersController extends Base
     public function logoutAction()
     {
         $curUser = App::getSession()->get('login');
-        App::getSession()::delete('login');
-        App::getSession()::delete('role');
+        App::getSession()->destroy();
+        App::setSession();
         App::getSession()->setFlash('User \'' . $curUser . '\' logged out successfully.');
         App::getRouter()->redirect('users.login');
-        App::getSession()->destroy();
     }
 }

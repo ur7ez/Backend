@@ -11,15 +11,19 @@
 </div>
 
 <form action="" method="post">
-    <label for="login"></label>
+    <label for="login">Login:
     <input type="text" id="login" name="login" class="form-control" placeholder="choose your login" autofocus
            required>
-    <label for="email"></label>
+    </label>
+    <label for="email">E-mail:
     <input type="email" id="email" name="email" class="form-control" placeholder="your e-mail here" required>
-    <label for="password"></label>
+    </label>
+    <label for="password">Password:
     <input type="password" id="password" name="password" class="form-control" placeholder="enter password" required>
-    <label for="password_cfm"></label>
+    </label>
+    <label for="password_cfm">Confirm password:
     <input type="password" id="password_cfm" name="password_cfm" class="form-control" placeholder="confirm password"
-           required><br>
+           required>
+    </label><br>
     <input type="submit" class="btn btn-success" value="<?= __('form.send') ?>">
 </form>

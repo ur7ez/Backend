@@ -10,10 +10,20 @@
     "phpunit/phpunit": "^6.4"
   },
   "autoload": {
-    "files": ["etc\\bootstrap.php"],
-    "psr-4": {"": "src\\"}
+    "files": [
+      "etc/bootstrap.php",
+      "tests/bootstrap.php"
+    ],
+    "psr-4": {
+      "": "src/"
+    }
   },
   "scripts": {
-    "test": "vendor\\bin\\phpunit --bootstrap 'tests\\bootstrap.php' tests --colors"
+    "test": "phpunit tests --colors"
+  },
+  "extra": {
+    "scripts-description": {
+      "test": "Run all tests!"
+    }
   }
 }

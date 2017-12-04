@@ -17,11 +17,11 @@ $session = \App\Core\App::getSession();
         <caption align="right"><i><?= __('admin.users') ?></i></caption>
         <thead class="thead-light">
         <tr align="center">
-            <th scope="col">Действия</th>
-            <th scope="col">Login</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Role</th>
-            <th scope="col">Is active</th>
+            <th scope="col"><?= __('users.todo') ?></th>
+            <th scope="col"><?= __('users.login') ?></th>
+            <th scope="col"><?= __('users.email') ?></th>
+            <th scope="col"><?= __('users.role') ?></th>
+            <th scope="col"><?= __('users.active') ?></th>
         </tr>
         </thead>
         <? foreach ($data as $users): ?>
@@ -35,7 +35,7 @@ $session = \App\Core\App::getSession();
                 <td><?= $users['login'] ?></td>
                 <td><?= $users['email'] ?></td>
                 <td><?= $users['role'] ?></td>
-                <td><?= $users['active'] ?></td>
+                <td style="text-align: center"><input type="checkbox" <?= ($users['active'])? 'checked':'' ?> disabled></td>
             </tr>
         <? endforeach; ?>
     </table>
