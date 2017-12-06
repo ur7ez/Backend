@@ -19,4 +19,12 @@ class ArrayTest extends \PHPUnit\Framework\TestCase
         array_push($data, 0);
         $this->assertNotEmpty($data);
     }
+
+    /**
+     * @expectedException PHPUnit\Framework\Error\Error
+     */
+    public function testFailingInclude()
+    {
+        include 'not_existing_file.php';
+    }
 }
