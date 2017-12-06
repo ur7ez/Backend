@@ -6,7 +6,7 @@
  * Time: 20:15
  */
 
-//define('DS', DIRECTORY_SEPARATOR);
 //define('ROOT', dirname(dirname(__FILE__)));
+//define('DS', DIRECTORY_SEPARATOR);
 //include(ROOT . DS . 'etc' . DS . 'bootstrap.php');
 include ROOT . DS . 'vendor' . DS . 'autoload.php';

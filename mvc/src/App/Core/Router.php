@@ -92,7 +92,7 @@ class Router
             $this->action = array_shift($pathParts);
         }
 
-        $this->params = $pathParts;
+        $this->params = (!empty($pathParts) && $pathParts[0] === '') ? [] : $pathParts;
 
     }
 
@@ -135,7 +135,7 @@ class Router
     public function redirect($path, $status = 302)
     {
         header('Location: ' . $this->buildUri($path), true, $status);
-        die();
+//        die();
     }
 
 }

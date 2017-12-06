@@ -6,8 +6,11 @@
  * Time: 19:14
  */
 
-define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(dirname(__FILE__)));
+//define('DS', DIRECTORY_SEPARATOR);
+//define('ROOT', dirname(dirname(__FILE__)));
+if (!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+if (!defined('ROOT')) define('ROOT', dirname(dirname(__FILE__)));
+
 
 include_once ROOT . DS . 'etc' . DS . 'config.php';
 include_once ROOT . DS . 'etc' . DS . 'functions.php';

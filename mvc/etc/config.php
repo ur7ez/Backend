@@ -13,7 +13,7 @@ use App\Core\Config;
  */
 Config::set('routes', ['default', 'admin']);
 Config::set('defaultRoute', 'default');
-Config::set('defaultController', 'pages');
+Config::set('defaultController', 'Pages');
 Config::set('defaultAction', 'index');
 
 /**
@@ -21,8 +21,6 @@ Config::set('defaultAction', 'index');
  */
 Config::set('languages', ['en', 'ru']);
 Config::set('defaultLanguage', 'ru');
-
-
 
 /**
  * Debug
