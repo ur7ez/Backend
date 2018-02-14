@@ -17,12 +17,20 @@ class Pagination
      */
     public function __construct(Array $options = ['itemsCount' => 257, 'itemsPerPage' => 5, 'currentPage' => 1])
     {
-        // prior PHP 7.1 we can use extract($options), but this is new syntax:
+        /**
+         * @var $itemsCount
+         * @var $itemsPerPage
+         * @var $currentPage
+         */
+        extract($options);
+        // in PHP 7.1 we can use this is new syntax:
+        /*
         list(
             'itemsCount' => $itemsCount,
             'itemsPerPage' => $itemsPerPage,
             'currentPage' => $currentPage
             ) = $options;
+        */
 
         // нулевая текущая страница
         if (!$currentPage) return;
