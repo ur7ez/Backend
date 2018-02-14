@@ -28,7 +28,7 @@ class User extends Base
      */
     public function checkFields($data)
     {
-        if (!isset($data['login']) || !isset($data['email'])
+        if (!isset($data['name']) || !isset($data['login']) || !isset($data['email'])
             || !isset($data['password']) || !strlen($data['login'])
             || !strlen($data['email']) || !strlen($data['password'])) {
             throw new \Exception('Registration data fields can\'t be empty');

@@ -10,17 +10,49 @@ namespace App\Controllers;
 
 use App\Core\App;
 use App\Core\Config;
+use App\Core\Pagination;
+use App\Entity\Comment;
 use App\Entity\User;
 
 class UsersController extends Base
 {
     /** @var User */
     private $usersModel;
+    /** @var Comment */
+    private $commentModel;
 
     public function __construct($params = [])
     {
         parent::__construct($params);
         $this->usersModel = new User(App::getConnection());
+        $this->commentModel = new Comment(App::getConnection());
+    }
+
+    public function indexAction()
+    {
+        $param = $this->params;
+        $page = isset($param['query']['page']) ? (int)$param['query']['page'] : 1;
+        $itemsCount = 0;
+
+        $this->data['comments'] = $this->commentModel->list();
+        if (empty($param[0])) {
+            $this->data['news'] = $this->usersModel->list(
+                ['active' => 1],
+                $this->itemsPerPage,
+                $this->itemsPerPage * ($page - 1),
+                0,
+                ['news_date_created' => -1],
+                $itemsCount
+            );
+            $this->data['select_info'] = 'Последние новости всех категорий';
+        }
+        $this->data['count_all'] = $itemsCount;
+
+        $this->data['pagination'] = new Pagination([
+            'itemsCount' => $itemsCount,
+            'itemsPerPage' => $this->itemsPerPage,
+            'currentPage' => $page
+        ]);
     }
 
     public function registerAction()
@@ -48,7 +80,7 @@ class UsersController extends Base
             $user = $this->usersModel->getByLogin($_POST['login']);
             $hash = md5(Config::get('sault') . $_POST['password']);
             if ($user && $user['active']) {
-                if ($user && $user['active'] && $hash == $user['password']) {
+                if ($hash == $user['password']) {
                     $ctrl = Config::get('defaultController');
                     App::getSession()->set('login', $user['login']);
                     App::getSession()->set('role', $user['role']);
@@ -60,10 +92,14 @@ class UsersController extends Base
                         App::getRouter()->redirect("$ctrl.index");
                     }
                 } else {
-                    App::getSession()->setFlash('Incorrect user login or password. Enter correct data');
+                    App::getSession()->setFlash('Incorrect user password. Enter correct data');
                 }
             } else {
-                App::getSession()->setFlash('user \'' . $user['login'] . '\' is deactivated by administrator');
+                if (!$user) {
+                    App::getSession()->setFlash('user \'' . $_POST['login'] . '\' is not registered');
+                } else {
+                    App::getSession()->setFlash('user \'' . $user['login'] . '\' is deactivated by administrator');
+                }
             }
         }
     }

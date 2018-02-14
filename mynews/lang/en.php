@@ -56,6 +56,7 @@ return [
         'users_edit_active' => 'Deactivate user',
     ],
     'form' => [
+        'name' => 'name',
         'login' => 'login',
         'email' => 'e-mail',
         'password' => 'password',

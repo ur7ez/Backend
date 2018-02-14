@@ -56,6 +56,7 @@ return [
         'users_edit_active' => 'Деактивировать пользователя',
     ],
     'form' => [
+        'name' => 'имя',
         'login' => 'логин',
         'email' => 'эл. адрес',
         'password' => 'пароль',

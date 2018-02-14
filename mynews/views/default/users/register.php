@@ -12,14 +12,18 @@
 
 <form action="" method="post">
     <fieldset>
+        <label for="name"><?= __('form.name') ?>:
+            <input type="text" id="name" name="name" class="form-control"
+                   placeholder="имя пользователя" autofocus>
+        </label>
         <label for="login"><?= __('form.login') ?>:
             <input type="text" id="login" name="login" class="form-control"
-                   placeholder="<?= __('form.choose_your_login') ?>" autofocus required>
+                   placeholder="<?= __('form.choose_your_login') ?>" required>
         </label>
         <label for="email"><?= __('form.email') ?>:
             <input type="email" id="email" name="email" class="form-control"
                    placeholder="<?= __('form.your_e-mail_here') ?>" required>
-        </label>
+        </label><br>
         <label for="password"><?= __('form.password') ?>:
             <input type="password" id="password" name="password" class="form-control"
                    placeholder="<?= __('form.enter_password') ?>" required>
